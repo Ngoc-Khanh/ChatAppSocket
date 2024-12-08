@@ -1,10 +1,13 @@
 import RouterProvider from "@/providers/router.provider";
 import { ThemeProvider } from "@/providers/theme.provider";
+import { UserProvider } from "@/providers/user.provider";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="theme">
-      <RouterProvider />
+      <UserProvider>
+        <RouterProvider />
+      </UserProvider>
     </ThemeProvider>
   );
 }
