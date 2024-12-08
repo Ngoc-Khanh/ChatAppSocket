@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { createContext, useContext, useState } from "react";
 
 interface StateUserType {

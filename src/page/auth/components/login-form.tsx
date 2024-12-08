@@ -4,7 +4,7 @@ import { HTMLAttributes, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { z } from "zod";
@@ -17,6 +17,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { routes } from "@/config/routes";
+import { useMutation } from "@tanstack/react-query";
+import { AuthApi } from "@/api/auth.api";
+import { toast } from "sonner";
 
 interface LoginFormProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -42,8 +45,21 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     },
   });
 
+  const loginMutation = useMutation({
+    mutationFn: AuthApi.fetchLogin,
+    onSuccess: (data) => {
+      console.log(data);
+      localStorage.setItem("ACCESS_TOKEN", data.data.access_token);
+      toast.success("Login success!");
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
+    },
+  });
+
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
+    loginMutation.mutate(data);
   };
 
   return (
