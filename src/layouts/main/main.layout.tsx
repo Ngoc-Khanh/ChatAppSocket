@@ -14,9 +14,16 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import ReactQueryProvider from "@/providers/react-query.provider";
-import { Outlet } from "react-router-dom";
+import { useStateUser } from "@/providers/user.provider";
+import { Navigate, Outlet } from "react-router-dom";
 
 export default function MainLayout() {
+  const { token } = useStateUser();
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
   return (
     <ReactQueryProvider>
       <SidebarProvider
@@ -44,12 +51,12 @@ export default function MainLayout() {
             </Breadcrumb>
           </header>
           <main className="flex flex-1 flex-col gap-4 p-4">
-            {Array.from({ length: 24 }).map((_, index) => (
+            {/* {Array.from({ length: 24 }).map((_, index) => (
               <div
                 key={index}
                 className="aspect-video h-12 w-full rounded-lg bg-muted/50"
               />
-            ))}
+            ))} */}
             <Outlet />
           </main>
         </SidebarInset>

@@ -9,18 +9,10 @@ import AuthLayout from "@/layouts/auth/auth.layout";
 import { Loader2 } from "lucide-react";
 import LoginPage from "@/page/auth/components/login-page";
 import RegisterPage from "@/page/auth/components/register-page";
+import MainLayout from "@/layouts/main";
+import HomePage from "@/page/home";
 
 export const reactRouter: RouteObject[] = [
-  // {
-  //   element: <MainLayout />,
-  //   children: [
-  //     {
-  //       path: routes.home,
-  //       element: <HomePage />,
-  //     },
-  //   ],
-  // },
-
   // AUTH ROUTERS
   {
     element: (
@@ -43,6 +35,20 @@ export const reactRouter: RouteObject[] = [
         path: routes.register,
         element: <RegisterPage />,
       },
+      {
+        path: routes.forgotPassword,
+        element: <div>Forgot Password</div>,
+      }
+    ],
+  },
+
+  {
+    element: <MainLayout />,
+    children: [
+      {
+        path: routes.home,        
+        element: <HomePage />,
+      }
     ],
   },
 
