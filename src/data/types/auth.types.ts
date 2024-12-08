@@ -1,16 +1,27 @@
-export type Tlogin = {
+export type TloginRequest = {
   email: string;
   password: string;
+};
+
+export interface IData {
+  access_token: string;
+  user: IUser;
 }
 
-export interface IUserProfile {
-  id: number;
+export interface IUser {
+  id: string;
   name: string;
   email: string;
   avatar: string | null;
-  email_verified_at: string;
+  email_verified_at: string | null;
   is_admin: boolean;
-  blocked_at: string | null;
-  created_at: string;
-  updated_at: string;
+  create_at: string;
+  update_at: string;
+}
+
+export interface IAuthResponse {
+  data: IData;
+  message: string;
+  status: number;
+  locale: string;
 }
