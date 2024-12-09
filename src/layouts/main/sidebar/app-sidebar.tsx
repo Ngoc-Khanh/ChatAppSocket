@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ArchiveX, File, Inbox, MessagesSquare, Send, Trash2 } from "lucide-react";
 
-import { NavUser } from "@/components/nav-user";
+import { NavUser } from "./components/nav-user";
 import { Label } from "@/components/ui/label";
 import {
   Sidebar,
@@ -20,6 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { useStateUser } from "@/providers/user.provider";
 import { Link } from "react-router-dom";
 import { routes } from "@/config/routes";
+import { NavConversation } from "./components/nav-conversation";
 
 // This is sample data
 const data = {
@@ -171,8 +172,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <MessagesSquare className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">Acme Inc</span>
-                    <span className="truncate text-xs">Enterprise</span>
+                    <span className="truncate font-semibold">SRF Chat App</span>
+                    <span className="truncate text-xs">Intern Project</span>
                   </div>
                 </Link>
               </SidebarMenuButton>
@@ -234,7 +235,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarContent>
           <SidebarGroup className="px-0">
             <SidebarGroupContent>
-              {mails.map((mail) => (
+              {/* {mails.map((mail) => (
                 <a
                   href="#"
                   key={mail.email}
@@ -249,7 +250,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     {mail.teaser}
                   </span>
                 </a>
-              ))}
+              ))} */}
+              <NavConversation />
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>

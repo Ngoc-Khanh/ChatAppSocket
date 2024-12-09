@@ -25,7 +25,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { ModeToggleSwitch } from "./mode-toggle";
+import { ModeToggleSwitch } from "@/components/mode-toggle";
 import { useState } from "react";
 import { LogOutDialog } from "@/page/dialog/logout.dialog";
 
