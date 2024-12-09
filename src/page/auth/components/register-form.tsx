@@ -16,6 +16,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useNavigate } from "react-router-dom";
+import { AuthApi } from "@/api/auth.api";
+import { useMutation } from "@tanstack/react-query";
+import { routes } from "@/config/routes";
+import { toast } from "sonner";
 
 interface RegisterFormProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -53,8 +57,24 @@ export default function RegisterForm({
     },
   });
 
+  const registerMutation = useMutation({
+    mutationFn: AuthApi.fetchRegister,
+    onSuccess: () => {
+      navigate(routes.login);
+      toast.success("Your account has been created successfully.");
+    },
+    onError: (error: any) => {
+      console.log(error.response);
+      toast.error(
+        error.response?.data?.message || "Your password or email is incorrect."
+      );
+      setIsLoading(false);
+    },
+  });
+
   function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true);
+    registerMutation.mutate(data);
   }
 
   return (

@@ -3,6 +3,13 @@ export type TloginRequest = {
   password: string;
 };
 
+export type TRegisterRequest = {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+}
+
 export interface IData {
   access_token: string;
   user: IUser;
@@ -21,7 +28,7 @@ export interface IUser {
 }
 
 export interface IAuthResponse {
-  data: IUser;
+  data: IData;
   message: string;
   status: number;
   locale: string;
