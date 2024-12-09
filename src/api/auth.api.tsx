@@ -12,6 +12,15 @@ export const AuthApi = {
 
   async fetchRegister() {},
 
+  async fetchLogout() {
+    const response = await apiPost(
+      "v1/auth/logout",
+      {},
+      { headers: getBearerToken() }
+    );
+    return response.data;
+  },
+
   async getProfile() {
     const response = await apiGet("v1/auth/profile", {
       headers: getBearerToken(),
