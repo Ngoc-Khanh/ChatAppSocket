@@ -26,6 +26,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { ModeToggleSwitch } from "./mode-toggle";
+import { useState } from "react";
+import { LogOutDialog } from "@/page/dialog/logout.dialog";
 
 export function NavUser({
   user,
@@ -37,6 +39,7 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <SidebarMenu>
@@ -107,12 +110,13 @@ export function NavUser({
               <ModeToggleSwitch />
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setIsOpen(true)}>
               <LogOut />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <LogOutDialog isOpen={isOpen} onClose={() => setIsOpen(false)} />
       </SidebarMenuItem>
     </SidebarMenu>
   );

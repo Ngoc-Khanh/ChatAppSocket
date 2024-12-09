@@ -16,6 +16,7 @@ import {
 import ReactQueryProvider from "@/providers/react-query.provider";
 import { useStateUser } from "@/providers/user.provider";
 import { Navigate, Outlet } from "react-router-dom";
+import { Toaster } from "sonner";
 
 export default function MainLayout() {
   const { token } = useStateUser();
@@ -57,6 +58,7 @@ export default function MainLayout() {
                 className="aspect-video h-12 w-full rounded-lg bg-muted/50"
               />
             ))} */}
+            <Toaster />
             <Outlet />
           </main>
         </SidebarInset>
