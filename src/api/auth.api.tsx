@@ -1,4 +1,8 @@
-import { IAuthResponse, TloginRequest } from "@/data/types/auth.types";
+import {
+  IAuthResponse,
+  TloginRequest,
+  TRegisterRequest,
+} from "@/data/types/auth.types";
 import { apiGet, apiPost, getBearerToken } from "./api";
 
 export const AuthApi = {
@@ -10,7 +14,13 @@ export const AuthApi = {
     return response.data;
   },
 
-  async fetchRegister() {},
+  async fetchRegister(credentials: TRegisterRequest) {
+    const response = await apiPost<TRegisterRequest, IAuthResponse>(
+      "v1/auth/register",
+      credentials
+    );
+    return response.data;
+  },
 
   async fetchLogout() {
     const response = await apiPost(
