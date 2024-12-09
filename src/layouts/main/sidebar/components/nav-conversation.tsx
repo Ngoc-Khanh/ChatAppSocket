@@ -1,0 +1,94 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { IConversation } from "@/data/types/conversations.type";
+import { ConversationAPI } from "@/api/conversations.api";
+import { useStateUser } from "@/providers/user.provider";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import { useMemo } from "react";
+
+export function NavConversation() {
+  const { user } = useStateUser();
+
+  const { data: conversation, isLoading } = useQuery({
+    queryKey: ["conversations"],
+    queryFn: ConversationAPI.getConversations,
+    staleTime: 1000 * 60 * 5,
+    enabled: !!user,
+  });
+
+  const friendAccount = useMemo(
+    () => (item: IConversation) => {
+      return item.user1_name !== user?.name ? item.user1_name : item.user2_name;
+    },
+    [user]
+  );
+
+  const formatTime = useMemo(
+    () => (datetime: string) => {
+      const date = new Date(datetime);
+      const hours = date.getUTCHours();
+      const minutes = date.getUTCMinutes();
+      const isPM = hours >= 12;
+      const formattedHours = hours % 12 || 12;
+      return `${formattedHours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")} ${isPM ? "PM" : "AM"}`;
+    },
+    []
+  );
+
+  return (
+    <>
+      {isLoading ? (
+        <>
+          {Array.from({ length: 10 }).map((_, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between gap-2 p-2 whitespace-nowrap border-b c text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            >
+              <div className="flex items-center space-x-2">
+                <Skeleton className="h-10 w-10 rounded-3xl items-center" />
+                <div className="space-y-2">
+                  <Skeleton className="h-3 w-[200px]" />
+                  <Skeleton className="h-3 w-[150px]" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </>
+      ) : (
+        conversation?.data.map((item: IConversation) => (
+          <Link
+            key={item.conversation_id}
+            to={`/conversation/${item.conversation_id}`}
+            className="flex items-center justify-between gap-2 p-2 whitespace-nowrap border-b c text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          >
+            <div className="flex items-center space-x-2">
+              <Avatar className="h-10 w-10 rounded-3xl items-center">
+                <AvatarImage src="" alt={friendAccount(item)} />
+                <AvatarFallback className="rounded-3xl">
+                  {friendAccount(item)
+                    .split(" ")
+                    .map((n: string) => n[0])
+                    .join("")}
+                </AvatarFallback>
+              </Avatar>
+              <div className="gap-2 items-start">
+                <span className="text-sm font-semibold">
+                  {friendAccount(item)}
+                </span>
+                <div className="line-clamp-2 text-xs text-gray-500 whitespace-break-spaces">
+                  <i>{item.last_message}</i>
+                </div>
+              </div>
+            </div>
+            <span className="ml-auto text-xs">
+              {formatTime(item.last_message_time)}
+            </span>
+          </Link>
+        ))
+      )}
+    </>
+  );
+}
