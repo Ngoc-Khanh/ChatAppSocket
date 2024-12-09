@@ -4,7 +4,7 @@ import { HTMLAttributes, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { z } from "zod";
@@ -53,7 +53,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
       toast.success("Login success!");
       setTimeout(() => {
         window.location.href = "/";
-      }, 1500);
+      }, 1000);
     },
   });
 

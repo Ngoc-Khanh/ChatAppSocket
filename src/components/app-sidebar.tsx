@@ -1,8 +1,8 @@
-import * as React from "react"
-import { ArchiveX, Command, File, Inbox, Send, Trash2 } from "lucide-react"
+import * as React from "react";
+import { ArchiveX, Command, File, Inbox, Send, Trash2 } from "lucide-react";
 
-import { NavUser } from "@/components/nav-user"
-import { Label } from "@/components/ui/label"
+import { NavUser } from "@/components/nav-user";
+import { Label } from "@/components/ui/label";
 import {
   Sidebar,
   SidebarContent,
@@ -15,16 +15,17 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { Switch } from "@/components/ui/switch"
+} from "@/components/ui/sidebar";
+import { Switch } from "@/components/ui/switch";
+import { useStateUser } from "@/providers/user.provider";
 
 // This is sample data
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
+  // user: {
+  //   name: "shadcn",
+  //   email: "m@example.com",
+  //   avatar: "/avatars/shadcn.jpg",
+  // },
   navMain: [
     {
       title: "Inbox",
@@ -139,14 +140,15 @@ const data = {
         "To celebrate our recent project success, I'd like to organize a team dinner.\nAre you available next Friday evening? Please let me know your preferences.",
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   // Note: I'm using state to show active item.
   // IRL you should use the url/router.
-  const [activeItem, setActiveItem] = React.useState(data.navMain[0])
-  const [mails, setMails] = React.useState(data.mails)
-  const { setOpen } = useSidebar()
+  const [activeItem, setActiveItem] = React.useState(data.navMain[0]);
+  const [mails, setMails] = React.useState(data.mails);
+  const { setOpen } = useSidebar();
+  const { user } = useStateUser();
 
   return (
     <Sidebar
@@ -154,9 +156,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       className="overflow-hidden [&>[data-sidebar=sidebar]]:flex-row"
       {...props}
     >
-      {/* This is the first sidebar */}
-      {/* We disable collapsible and adjust width to icon. */}
-      {/* This will make the sidebar appear as icons. */}
       <Sidebar
         collapsible="none"
         className="!w-[calc(var(--sidebar-width-icon)_+_1px)] border-r"
@@ -190,15 +189,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         hidden: false,
                       }}
                       onClick={() => {
-                        setActiveItem(item)
-                        const mail = data.mails.sort(() => Math.random() - 0.5)
+                        setActiveItem(item);
+                        const mail = data.mails.sort(() => Math.random() - 0.5);
                         setMails(
                           mail.slice(
                             0,
                             Math.max(5, Math.floor(Math.random() * 10) + 1)
                           )
-                        )
-                        setOpen(true)
+                        );
+                        setOpen(true);
                       }}
                       isActive={activeItem.title === item.title}
                       className="px-2.5 md:px-2"
@@ -213,12 +212,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter>
-          <NavUser user={data.user} />
+          {user && <NavUser user={user} />}
         </SidebarFooter>
       </Sidebar>
 
-      {/* This is the second sidebar */}
-      {/* We disable collapsible and let it fill remaining space */}
       <Sidebar collapsible="none" className="hidden flex-1 md:flex">
         <SidebarHeader className="gap-3.5 border-b p-4">
           <div className="flex w-full items-center justify-between">
@@ -256,5 +253,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarContent>
       </Sidebar>
     </Sidebar>
-  )
+  );
 }

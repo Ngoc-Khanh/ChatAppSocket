@@ -9,18 +9,19 @@ export interface IData {
 }
 
 export interface IUser {
-  id: string;
+  id: number;
   name: string;
   email: string;
-  avatar: string | null;
+  avatar: string;
   email_verified_at: string | null;
-  is_admin: boolean;
+  is_admin: boolean | number;
+  blocked_at: string | null;
   create_at: string;
   update_at: string;
 }
 
 export interface IAuthResponse {
-  data: IData;
+  data: IUser;
   message: string;
   status: number;
   locale: string;

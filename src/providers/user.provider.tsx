@@ -1,9 +1,18 @@
-import { createContext, useContext, useState } from "react";
+import { AuthApi } from "@/api/auth.api";
+import { IUser } from "@/data/types/auth.types";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface StateUserType {
-  user: string;
+  user: IUser | null;
   token: string;
-  setUser: (user: string) => void;
+  setUser: Dispatch<SetStateAction<IUser | null>>;
   setToken: (token: string) => void;
 }
 
@@ -12,14 +21,14 @@ interface UserProviderProps {
 }
 
 const StateUser = createContext<StateUserType>({
-  user: "",
+  user: null,
   token: "",
   setUser: () => {},
   setToken: () => {},
 });
 
 export const UserProvider = ({ children }: UserProviderProps) => {
-  const [user, setUser] = useState<string>("");
+  const [user, setUser] = useState<IUser | null>(null);
   const [token, setToken] = useState<string>(
     localStorage.getItem("ACCESS_TOKEN") || ""
   );
@@ -29,6 +38,19 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     if (newToken) localStorage.setItem("ACCESS_TOKEN", newToken);
     else localStorage.removeItem("ACCESS_TOKEN");
   };
+
+  useEffect(() => {
+    if (token) {
+      AuthApi.getProfile()
+        .then((response) => {
+          setUser(response.data);
+        })
+        .catch(() => {
+          setUser(null);
+          updateToken("");
+        });
+    }
+  }, [token]);
 
   return (
     <StateUser.Provider value={{ user, token, setUser, setToken: updateToken }}>
