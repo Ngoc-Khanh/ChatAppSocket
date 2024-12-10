@@ -1,5 +1,14 @@
+"use client";
+
 import * as React from "react";
-import { ArchiveX, File, Inbox, MessagesSquare, Send, Trash2 } from "lucide-react";
+import {
+  ArchiveX,
+  File,
+  Inbox,
+  MessagesSquare,
+  Send,
+  Trash2,
+} from "lucide-react";
 
 import { NavUser } from "./components/nav-user";
 import { Label } from "@/components/ui/label";
@@ -214,9 +223,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <SidebarFooter>
-          {user && <NavUser user={user} />}
-        </SidebarFooter>
+        <SidebarFooter>{user && <NavUser user={user} />}</SidebarFooter>
       </Sidebar>
 
       <Sidebar collapsible="none" className="hidden flex-1 md:flex">
@@ -235,22 +242,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarContent>
           <SidebarGroup className="px-0">
             <SidebarGroupContent>
-              {/* {mails.map((mail) => (
-                <a
-                  href="#"
-                  key={mail.email}
-                  className="flex flex-col items-start gap-2 whitespace-nowrap border-b p-4 text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                >
-                  <div className="flex w-full items-center gap-2">
-                    <span>{mail.name}</span>{" "}
-                    <span className="ml-auto text-xs">{mail.date}</span>
-                  </div>
-                  <span className="font-medium">{mail.subject}</span>
-                  <span className="line-clamp-2 w-[260px] whitespace-break-spaces text-xs">
-                    {mail.teaser}
-                  </span>
-                </a>
-              ))} */}
               <NavConversation />
             </SidebarGroupContent>
           </SidebarGroup>

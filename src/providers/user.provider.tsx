@@ -1,5 +1,5 @@
 import { AuthApi } from "@/api/auth.api";
-import { IUser } from "@/data/types/auth.types";
+import { IUser } from "@/data/types/auth.type";
 import {
   createContext,
   Dispatch,

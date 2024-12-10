@@ -11,6 +11,7 @@ import LoginPage from "@/page/auth/components/login-page";
 import RegisterPage from "@/page/auth/components/register-page";
 import MainLayout from "@/layouts/main";
 import HomePage from "@/page/home";
+import ConversationPage from "@/page/conversation/conversation";
 
 export const reactRouter: RouteObject[] = [
   // AUTH ROUTERS
@@ -48,7 +49,11 @@ export const reactRouter: RouteObject[] = [
       {
         path: routes.home,        
         element: <HomePage />,
-      }
+      },
+      {
+        path: routes.conversation(":id"),
+        element: <ConversationPage />,
+      },
     ],
   },
 
