@@ -2,7 +2,7 @@ import {
   IAuthResponse,
   TloginRequest,
   TRegisterRequest,
-} from "@/data/types/auth.types";
+} from "@/data/types/auth.type";
 import { apiGet, apiPost, getBearerToken } from "./api";
 
 export const AuthApi = {

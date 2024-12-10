@@ -26,18 +26,32 @@ export function NavConversation() {
 
   const formatTime = useMemo(
     () => (datetime: string) => {
+      const now = new Date();
       const date = new Date(datetime);
-      const hours = date.getUTCHours();
-      const minutes = date.getUTCMinutes();
-      const isPM = hours >= 12;
-      const formattedHours = hours % 12 || 12;
-      return `${formattedHours.toString().padStart(2, "0")}:${minutes
-        .toString()
-        .padStart(2, "0")} ${isPM ? "PM" : "AM"}`;
+      const diffMinutes = Math.floor(
+        (now.getTime() - date.getTime()) / (1000 * 60)
+      );
+      const diffDays = Math.floor(diffMinutes / (60 * 24));
+
+      if (diffDays > 7) {
+        return date.toLocaleDateString("en-GB"); // formats as dd/mm/yyyy
+      } else if (diffDays > 0) {
+        return `${diffDays} day${diffDays > 1 ? "s" : ""} left`;
+      } else if (diffMinutes > 0) {
+        return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
+      } else {
+        const hours = date.getUTCHours();
+        const minutes = date.getUTCMinutes();
+        const isPM = hours >= 12;
+        const formattedHours = hours % 12 || 12;
+        return `${formattedHours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")} ${isPM ? "PM" : "AM"}`;
+      }
     },
     []
   );
-
+  
   return (
     <>
       {isLoading ? (

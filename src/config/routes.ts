@@ -1,7 +1,4 @@
-export const routes = {
-  home: "/",
-  room: (id: string) => `/room/${id}`,
-
+export const routes = {  
   // AUTH ROUTES
   login: "/login",
   register: "/register",
@@ -11,7 +8,8 @@ export const routes = {
   verifyPhone: "/verify-phone",
   
   // MAIN ROUTES
-  
+  home: "/",
+  conversation: (id: string) => `/conversation/${id}`,
 
 
   // ERROR ROUTES
