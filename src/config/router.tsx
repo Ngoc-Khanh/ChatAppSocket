@@ -39,7 +39,7 @@ export const reactRouter: RouteObject[] = [
       {
         path: routes.forgotPassword,
         element: <div>Forgot Password</div>,
-      }
+      },
     ],
   },
 
@@ -47,12 +47,23 @@ export const reactRouter: RouteObject[] = [
     element: <MainLayout />,
     children: [
       {
-        path: routes.home,        
+        path: routes.home,
         element: <HomePage />,
       },
       {
         path: routes.conversation(":id"),
-        element: <ConversationPage />,
+        // element: <ConversationPage />,
+        element: (
+          <Suspense
+            fallback={
+              <div className="flex h-svh items-center justify-center overflow-hidden">
+                <Loader2 className="h-10 w-full animate-spin items-center justify-center" />
+              </div>
+            }
+          >
+            <ConversationPage />
+          </Suspense>
+        ),
       },
     ],
   },

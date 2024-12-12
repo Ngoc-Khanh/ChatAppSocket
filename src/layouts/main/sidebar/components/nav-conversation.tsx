@@ -28,20 +28,21 @@ export function NavConversation() {
     () => (datetime: string) => {
       const now = new Date();
       const date = new Date(datetime);
-      const diffMinutes = Math.floor(
-        (now.getTime() - date.getTime()) / (1000 * 60)
-      );
+      const diffMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
       const diffDays = Math.floor(diffMinutes / (60 * 24));
 
       if (diffDays > 7) {
         return date.toLocaleDateString("en-GB"); // formats as dd/mm/yyyy
       } else if (diffDays > 0) {
-        return `${diffDays} day${diffDays > 1 ? "s" : ""} left`;
+        return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+      } else if (diffMinutes >= 60) {
+        const hours = Math.floor(diffMinutes / 60);
+        return `${hours} hour${hours > 1 ? "s" : ""} ago`;
       } else if (diffMinutes > 0) {
         return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
       } else {
-        const hours = date.getUTCHours();
-        const minutes = date.getUTCMinutes();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
         const isPM = hours >= 12;
         const formattedHours = hours % 12 || 12;
         return `${formattedHours.toString().padStart(2, "0")}:${minutes
@@ -59,7 +60,7 @@ export function NavConversation() {
           {Array.from({ length: 10 }).map((_, index) => (
             <div
               key={index}
-              className="flex items-center justify-between gap-2 p-2 whitespace-nowrap border-b c text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              className="flex items-center justify-between gap-2 p-2 py-3 whitespace-nowrap border-b c text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             >
               <div className="flex items-center space-x-2">
                 <Skeleton className="h-10 w-10 rounded-3xl items-center" />
@@ -76,7 +77,7 @@ export function NavConversation() {
           <Link
             key={item.conversation_id}
             to={`/conversation/${item.conversation_id}`}
-            className="flex items-center justify-between gap-2 p-2 whitespace-nowrap border-b c text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            className="flex items-center justify-between gap-2 p-2 py-3 whitespace-nowrap border-b c text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
           >
             <div className="flex items-center space-x-2">
               <Avatar className="h-10 w-10 rounded-3xl items-center">
@@ -89,10 +90,10 @@ export function NavConversation() {
                 </AvatarFallback>
               </Avatar>
               <div className="gap-2 items-start">
-                <span className="text-sm font-semibold">
+                <span className="line-clamp-1 text-sm font-semibold whitespace-break-spaces">
                   {friendAccount(item)}
                 </span>
-                <div className="line-clamp-2 text-xs text-gray-500 whitespace-break-spaces">
+                <div className="line-clamp-1 text-xs text-gray-500 whitespace-break-spaces">
                   <i>{item.last_message}</i>
                 </div>
               </div>
