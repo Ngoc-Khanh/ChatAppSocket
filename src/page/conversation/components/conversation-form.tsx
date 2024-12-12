@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { IData, IMessageResponse, IMessageSent } from "@/data/types/message.type";
+import {
+  IData,
+  IMessageResponse,
+  IMessageSent,
+} from "@/data/types/message.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, Paperclip, Plus, Send, User, Users } from "lucide-react";
@@ -49,11 +53,6 @@ export default function ConversationForm() {
   const isMessageEmpty = !form.watch("message")?.trim();
 
   useEffect(() => {
-    document.body.classList.add("overflow-y-hidden");
-    return () => document.body.classList.remove("overflow-y-hidden");
-  }, []);
-
-  useEffect(() => {
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
     }
@@ -64,6 +63,7 @@ export default function ConversationForm() {
   }, [messages]);
 
   useEffect(() => {
+    document.body.classList.add("overflow-y-hidden");
     socket?.on("message", (message: IMessageResponse["data"][0]) => {
       setChatMessages((prevMessages) => [
         ...prevMessages,
@@ -72,6 +72,7 @@ export default function ConversationForm() {
     });
     return () => {
       socket?.off("message");
+      document.body.classList.remove("overflow-y-hidden");
     };
   }, []);
 
@@ -95,7 +96,7 @@ export default function ConversationForm() {
 
   return (
     <div className="h-full flex-grow flex">
-      <div className="w-full max-w-6xl mx-auto flex flex-col">
+      <div className="w-full max-w-6xl mx-auto flex flex-col-reverse">
         <ScrollArea
           className="flex-grow mb-8 h-[70vh] h-max-[70vh] p-4 overflow-y-auto"
           ref={scrollAreaRef}
