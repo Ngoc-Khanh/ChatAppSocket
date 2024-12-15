@@ -50,16 +50,25 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     onSuccess: (data) => {
       console.log(data);
       localStorage.setItem("ACCESS_TOKEN", data.data.access_token);
+      setIsLoading(false);
       toast.success("Login success!");
       setTimeout(() => {
         window.location.href = "/";
-      }, 1000);
+      }, 500);
+    },
+    onError: (error) => {
+      toast.error("Login failed!", { description: error.message });
+      setIsLoading(false);
     },
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    loginMutation.mutate(data);
+    loginMutation.mutate(data, {
+      onSettled: () => {
+        setIsLoading(false);
+      },
+    });
   };
 
   return (
